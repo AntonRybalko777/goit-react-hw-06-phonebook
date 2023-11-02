@@ -1,7 +1,10 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Notiflix from 'notiflix';
+import { nanoid } from 'nanoid';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/ContactsSlice';
 
 import {
   StyledField,
@@ -23,7 +26,9 @@ const contactSchema = Yup.object().shape({
     .max(12, 'Max length is 12'),
 });
 
-export const ContactForm = ({ onAdd, checkDuplicate }) => {
+export const ContactForm = ({ checkDuplicate }) => {
+  const dispatch = useDispatch();
+
   return (
     <div>
       <Formik
@@ -39,8 +44,14 @@ export const ContactForm = ({ onAdd, checkDuplicate }) => {
             Notiflix.Notify.success(
               `${values.name} successfully added to the contacts!`
             );
-            onAdd(values);
             actions.resetForm();
+            dispatch(
+              addContact({
+                name: values.name.trim(),
+                number: values.number.trim(),
+                id: nanoid(),
+              })
+            );
           }
         }}
       >

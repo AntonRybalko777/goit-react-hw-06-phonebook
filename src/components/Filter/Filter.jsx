@@ -1,6 +1,10 @@
 import { Input, Label } from './Filter.styled';
+import { useDispatch } from 'react-redux';
+import { changeFilter } from 'redux/FiltersSlice';
 
-export const Filter = ({ onChange }) => {
+export const Filter = () => {
+  const dispatch = useDispatch();
+
   return (
     <div>
       <Label>
@@ -8,7 +12,7 @@ export const Filter = ({ onChange }) => {
         <Input
           type="text"
           onChange={evt => {
-            onChange(evt.target.value);
+            dispatch(changeFilter(evt.target.value));
           }}
         />
       </Label>

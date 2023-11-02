@@ -14,13 +14,6 @@ function checkSavedContacts() {
 
 export const App = () => {
   const [contacts, setContacts] = useState(checkSavedContacts);
-  const [filter, setFilter] = useState('');
-
-  const checkDuplicate = enteredName => {
-    return contacts.find(contact => {
-      return contact.name === enteredName;
-    });
-  };
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -29,7 +22,7 @@ export const App = () => {
   return (
     <Container>
       <h1>Phonebook</h1>
-      <ContactForm checkDuplicate={checkDuplicate} />
+      <ContactForm />
       <h2>Contacts</h2>
       {contacts.length > 0 ? <Filter /> : <Span>Contact list is empty</Span>}
 

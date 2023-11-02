@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import Notiflix from 'notiflix';
 import { nanoid } from 'nanoid';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { addContact } from 'redux/ContactsSlice';
 
 import {
@@ -26,9 +26,9 @@ const contactSchema = Yup.object().shape({
     .max(12, 'Max length is 12'),
 });
 
-export const ContactForm = ({ checkDuplicate }) => {
+export const ContactForm = () => {
   const dispatch = useDispatch();
-
+  const contacts = useSelector(state => state.contactsList.contacts);
   return (
     <div>
       <Formik
@@ -38,13 +38,9 @@ export const ContactForm = ({ checkDuplicate }) => {
         }}
         validationSchema={contactSchema}
         onSubmit={(values, actions) => {
-          if (checkDuplicate(values.name.trim())) {
+          if (contacts.find(contact => contact.name === values.name.trim())) {
             Notiflix.Notify.failure(`${values.name} already in contacts`);
           } else {
-            Notiflix.Notify.success(
-              `${values.name} successfully added to the contacts!`
-            );
-            actions.resetForm();
             dispatch(
               addContact({
                 name: values.name.trim(),
@@ -52,6 +48,10 @@ export const ContactForm = ({ checkDuplicate }) => {
                 id: nanoid(),
               })
             );
+            Notiflix.Notify.success(
+              `${values.name} successfully added to the contacts!`
+            );
+            actions.resetForm();
           }
         }}
       >

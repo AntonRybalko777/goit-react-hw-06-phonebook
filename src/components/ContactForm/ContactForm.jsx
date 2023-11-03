@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 import { addContact } from 'redux/ContactsSlice';
+import { getContacts } from 'redux/ContactsSlice';
 
 import {
   StyledField,
@@ -28,7 +29,7 @@ const contactSchema = Yup.object().shape({
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contactsList.contacts);
+  const contacts = useSelector(getContacts);
   return (
     <div>
       <Formik

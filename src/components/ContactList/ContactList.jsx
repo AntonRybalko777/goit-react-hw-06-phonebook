@@ -3,10 +3,12 @@ import { Button, Li, Ul } from './ContactList.styled';
 import { AiFillDelete } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from 'redux/ContactsSlice';
+import { getContacts } from 'redux/ContactsSlice';
+import { getFilter } from 'redux/FiltersSlice';
 
 export const ContactList = () => {
-  const contacts = useSelector(state => state.contactsList.contacts);
-  const filter = useSelector(state => state.filtersList.filter);
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
   const filteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
